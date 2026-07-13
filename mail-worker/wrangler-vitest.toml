@@ -1,0 +1,16 @@
+name = "cloud-mail-vitest"
+main = "src/index.js"
+compatibility_date = "2025-03-10"
+
+[assets]
+binding = "assets"
+directory = "./dist"
+not_found_handling = "single-page-application"
+run_worker_first = true
+
+[vars]
+domain = ["example.com"]
+admin = "admin@example.com"
+jwt_secret = "vitest-only-secret"
+analysis_cache = false
+orm_log = false
