@@ -2,6 +2,7 @@
 	"name": "mail-worker",
 	"version": "0.0.0",
 	"private": true,
+	"packageManager": "pnpm@11.10.0",
 	"scripts": {
 		"dev": "wrangler dev --config wrangler-dev.toml",
 		"test": "pnpm run test:unit",

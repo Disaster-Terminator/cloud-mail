@@ -8,10 +8,18 @@ on:
       - "mail-vue/**"
   workflow_dispatch:
 
+concurrency:
+  group: cloud-mail-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
 jobs:
   Deploy-cloud-mail:
     name: 🏗️ Build and Deploy
     runs-on: ubuntu-latest
+    timeout-minutes: 20
 
     env:
       NAME: ${{ secrets.NAME || vars.NAME || 'cloud-mail' }}
@@ -43,15 +51,15 @@ jobs:
 
     steps:
       - name: 🚚 检出代码仓库 / Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: ⚙ 设置 pnpm / Set up pnpm
-        uses: pnpm/action-setup@v4.1.0
+        uses: pnpm/action-setup@v6
         with:
-          version: 9
+          package_json_file: mail-worker/package.json
 
       - name: ⚙ 设置 Node.js / Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "22"
           cache: "pnpm"
@@ -287,10 +295,3 @@ jobs:
             echo "❌ Failed. HTTP: $HTTP_CODE, Response: $RESPONSE_BODY"
             exit 1
           fi
-
-      - name: 🗑️ 删除运行记录 / Delete workflow runs
-        uses: GitRML/delete-workflow-runs@main
-        continue-on-error: true
-        with:
-          retain_days: '1'
-          keep_minimum_runs: '0'
